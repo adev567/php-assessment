@@ -36,6 +36,7 @@ class UserController extends Controller
             ]);
             if($user){
                 $success['token'] =  $user->createToken($user)->accessToken; 
+                $success['id'] =  $user->id; 
                 // Sending verification code email
                 if($this->sendVerificationEmail($user->id)){
                     return response()->json(['error'=>'Failed to send verification email, please try again.'], 500);            
@@ -59,15 +60,19 @@ class UserController extends Controller
         });
     }
 
-    public function verifyCode(Request $request,$id){
+    public function verifyCode($id, $getUserCode){
         $user = User::find($id);
-        $getUserCode = $request->verification_code; 
-        if($user->code == $getUserCode){
-            $user->update(['verification_status'=> 'true']); // update verification status
-            return response()->json(['success'=>'Verification Code verified successfully'], 200);            
+        if($user){
+            if($user->verification_code == $getUserCode){
+                $user->update(['verification_status'=> true]); // update verification status
+                return response()->json(['success'=>'Verification Code verified successfully'], 200);            
+            }
+            else{
+                return response()->json(['error'=>'Verification Code missmatched'], 500);            
+            }
         }
         else{
-            return response()->json(['error'=>'Verification Code missmatched'], 500);            
+            return response()->json(['error'=>'User not found'], 500);            
         }
     }
 

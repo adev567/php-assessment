@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register', [\App\Http\Controllers\UserController::class,'register']);
 Route::post('login', [\App\Http\Controllers\UserController::class,'login']);
-Route::get('/verify/{id}', [\App\Http\Controllers\UserController::class,'verifyCode']);
+Route::get('/verify/{id}/{code}', [\App\Http\Controllers\UserController::class,'verifyCode']);
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('logout', [\App\Http\Controllers\UserController::class,'logout']);
     Route::resource('/todo',\App\Http\Controllers\TodoController::class);
