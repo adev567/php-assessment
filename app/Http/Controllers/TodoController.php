@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Validator;
 use Auth;
 
 class TodoController extends Controller
